@@ -1,4 +1,10 @@
 
+This is a fork of jbuitt/nwws-python-client.  A change to resolve an issue for which I responded is branch zentec-fork-master-add-ssl.  
+
+Some changes I made for my own use is in zentec-fork-master-add-ssl
+
+
+
 # nwws-python-client
 
 This is a simple product download client for the NWWS-OI ([NOAA Weather Wire Service](http://www.nws.noaa.gov/nwws/) Open Interface) written in Python. The NOAA Weather Wire Service is a satellite data collection and dissemination system operated by the [National Weather Service](http://weather.gov), which was established in October 2000. Its purpose is to provide state and federal government, commercial users, media and private citizens with timely delivery of meteorological, hydrological, climatological and geophysical information. 
