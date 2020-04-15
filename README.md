@@ -1,7 +1,9 @@
 
-This is a fork of jbuitt/nwws-python-client.  A change to resolve an issue for which I responded is branch zentec-fork-master-add-ssl.  
+This is a fork of jbuitt/nwws-python-client.  A change to resolve an issue for which I responded is branch https://github.com/zentec/nwws-python-client/tree/zentec-fork-master-add-ssl.  
 
-Some changes I made for my own use is in zentec-fork-master-add-ssl
+Some changes I made for my own use can be found in https://github.com/zentec/nwws-python-client/tree/zentec-fork-master-add-ssl-more.
+
+Fork is for tracking my own changes only, it may go away at any time.  Please see original repo at https://github.com/jbuitt/nwws-python-client
 
 
 
