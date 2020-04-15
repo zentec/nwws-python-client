@@ -5,8 +5,11 @@ import signal
 import os
 import logging
 import json
+import re
 import time
 import sleekxmpp
+import subprocess
+from subprocess import PIPE
 from datetime import datetime
 from xml.dom import minidom
 
@@ -117,31 +120,29 @@ class MUCBot(sleekxmpp.ClientXMPP):
         cccc = itemlist[0].attributes['cccc'].value.lower()
         awipsid = itemlist[0].attributes['awipsid'].value.lower()
         id = itemlist[0].attributes['id'].value
-        content = itemlist[0].firstChild.nodeValue
-        if awipsid:
+        content = re.sub(r'(\n\n\n\n)+', r'\n\n\n', itemlist[0].firstChild.nodeValue)
+        content = lines=re.sub(r'(\n\n)+', r'\n', content)
+        if awipsid and config['archive']:
             dayhourmin = datetime.utcnow().strftime("%d%H%M")
             filename = cccc + '_' + ttaaii + '-' + awipsid + '.' + dayhourmin + '_' + id + '.txt'
             print("DEBUG\t Writing " + filename, file=sys.stderr)
             if not os.path.exists(config['archivedir'] + '/' + cccc):
                 os.makedirs(config['archivedir'] + '/' + cccc)
-            # Remove every other line
-            lines = content.splitlines()
             pathtofile = config['archivedir'] + '/' + cccc + '/' + filename
-            f = open(pathtofile, 'w')
-            count = 0
-            for line in lines:
-                if count == 0 and line == '':
-                    continue
-                if count % 2 == 0:
-                    f.write(line + "\n")
-                count += 1
-            f.close()
+            try:
+                f = open(pathtofile, 'w')
+                f.write(content)
+                f.close()
+            except IOError as e:
+                print(f"Error writing out {pathtofile} {e}")
+                pass
             # Run a command using the file as the parameter (if pan_run is defined in the config file)
-            if 'pan_run' in config:
+        if awipsid and config['pipe']:
                 try:
-                    os.system(config['pan_run']+' '+pathtofile+' >/dev/null')
+                    r = subprocess.Popen([config['pipe_cmd']], stdout=PIPE, stderr=PIPE, stdin=PIPE)
+                    r.communicate(input=content.encode())[0]
                 except OSError as e:
-                    print("ERROR\t Execution failed: " + e, file=sys.stderr)
+                    print(f"ERROR\t Execution failed: {e}")
 
     def muc_online(self, presence):
         """
@@ -155,12 +156,7 @@ class MUCBot(sleekxmpp.ClientXMPP):
                         documentation for the Presence stanza
                         to see how else it may be used.
         """
-        if presence['muc']['nick'] != self.nick:
-            self.send_message(mto=presence['from'].bare,
-                mbody="Hello, %s %s" % (presence['muc']['role'],
-                    presence['muc']['nick']),
-                mtype='groupchat')
-
+        pass
 
 if __name__ == '__main__':
     # Check for command line arguments
@@ -190,7 +186,7 @@ if __name__ == '__main__':
         xmpp.register_plugin('xep_0199') # XMPP Ping
 
         # Connect to the XMPP server and start processing XMPP stanzas.
-        if xmpp.connect((config['server'], config['port'])):
+        if xmpp.connect((config['server'], config['port']), True, False, True):
             # If you do not have the dnspython library installed, you will need
             # to manually specify the name of the server if it does not match
             # the one in the JID. For example, to use Google Talk you would

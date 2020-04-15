@@ -1,0 +1,11 @@
+{
+  "server": "nwws-oi.weather.gov",
+  "port": "5223",
+  "username": "your.name",
+  "password": "your.password",
+  "resource": "nwws",
+  "archive": true,
+  "archivedir": "/path/to/dir",
+  "pipe": false,
+  "pipe_cmd": "stdintest.sh"
+}
