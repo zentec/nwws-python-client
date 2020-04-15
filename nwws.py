@@ -121,7 +121,7 @@ class MUCBot(sleekxmpp.ClientXMPP):
         awipsid = itemlist[0].attributes['awipsid'].value.lower()
         id = itemlist[0].attributes['id'].value
         content = re.sub(r'(\n\n\n\n)+', r'\n\n\n', itemlist[0].firstChild.nodeValue)
-        content = lines=re.sub(r'(\n\n)+', r'\n', content)
+        content = re.sub(r'(\n\n)+', r'\n', content)
         if awipsid and config['archive']:
             dayhourmin = datetime.utcnow().strftime("%d%H%M")
             filename = cccc + '_' + ttaaii + '-' + awipsid + '.' + dayhourmin + '_' + id + '.txt'
