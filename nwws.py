@@ -168,7 +168,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(levelname)-8s %(message)s')
 
     # Parse JSON config
-    config = json.load(open('config.json'))
+    config = json.load(open(sys.argv[1]))
 
     # Create archive directory if it does not exist
     if not os.path.exists(config['archivedir']):
