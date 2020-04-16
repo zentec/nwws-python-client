@@ -117,14 +117,14 @@ class MUCBot(sleekxmpp.ClientXMPP):
         xmldoc = minidom.parseString(str(msg))
         itemlist = xmldoc.getElementsByTagName('x')
         ttaaii = itemlist[0].attributes['ttaaii'].value.lower()
-        cccc = itemlist[0].attributes['cccc'].value.lower()
+        office = itemlist[0].attributes['cccc'].value.lower()
         awipsid = itemlist[0].attributes['awipsid'].value.lower()
         id = itemlist[0].attributes['id'].value
         content = re.sub(r'(\n\n\n\n)+', r'\n\n\n', itemlist[0].firstChild.nodeValue)
         content = re.sub(r'(\n\n)+', r'\n', content)
         if awipsid and config['archive']:
             dayhourmin = datetime.utcnow().strftime("%d%H%M")
-            filename = cccc + '_' + ttaaii + '-' + awipsid + '.' + dayhourmin + '_' + id + '.txt'
+            filename = office + '_' + ttaaii + '-' + awipsid + '.' + dayhourmin + '_' + id + '.txt'
             print("DEBUG\t Writing " + filename, file=sys.stderr)
             if not os.path.exists(config['archivedir'] + '/' + cccc):
                 os.makedirs(config['archivedir'] + '/' + cccc)
@@ -139,7 +139,7 @@ class MUCBot(sleekxmpp.ClientXMPP):
             # Run a command using the file as the parameter (if pan_run is defined in the config file)
         if awipsid and config['pipe']:
                 try:
-                    r = subprocess.Popen([config['pipe_cmd']], stdout=PIPE, stderr=PIPE, stdin=PIPE)
+                    r = subprocess.Popen([config['pipe_cmd'], office], stdout=PIPE, stderr=PIPE, stdin=PIPE)
                     r.communicate(input=content.encode())[0]
                 except OSError as e:
                     print(f"ERROR\t Execution failed: {e}")
