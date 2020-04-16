@@ -126,9 +126,9 @@ class MUCBot(sleekxmpp.ClientXMPP):
             dayhourmin = datetime.utcnow().strftime("%d%H%M")
             filename = office + '_' + ttaaii + '-' + awipsid + '.' + dayhourmin + '_' + id + '.txt'
             print("DEBUG\t Writing " + filename, file=sys.stderr)
-            if not os.path.exists(config['archivedir'] + '/' + cccc):
-                os.makedirs(config['archivedir'] + '/' + cccc)
-            pathtofile = config['archivedir'] + '/' + cccc + '/' + filename
+            if not os.path.exists(config['archivedir'] + '/' + office):
+                os.makedirs(config['archivedir'] + '/' + office)
+            pathtofile = config['archivedir'] + '/' + office + '/' + filename
             try:
                 f = open(pathtofile, 'w')
                 f.write(content)
